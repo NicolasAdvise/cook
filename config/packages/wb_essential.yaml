@@ -1,0 +1,27 @@
+wb_essential:
+    #
+    # Defines the path to the template to render when an
+    # uncaught exception is thrown and should render as HTML.
+    #
+    prod_error_template: '@WebeakEssential/error.html.twig'
+
+    unique_id_generator:
+        #
+        # Defines the directory used to store ids.
+        #
+        folder: '%kernel.project_dir%/var/storage/wb-essential/uniqueids'
+
+    shared_storage:
+        #
+        # A unique identifier for your project to isolate the data you'll save
+        # in this project from data written by other project if you use the same server across multiple projects.
+        #
+        project_namespace: "%env(WB_ESSENTIAL_SHARED_STORAGE_NAMESPACE)%"
+
+        #
+        # If using Redis adapter
+        # You can omit this if you want to use the alias 'default' which is set by default.
+        #
+        redis:
+            snc_client_alias: default
+            dsn: "%env(REDIS_URL)%"

@@ -1,0 +1,12 @@
+wb_doctrine_extensions:
+    # Defines directories where to search for entity observers
+    # You can define as many directories as you want
+    entity_observers:
+        app:
+            root_dir: "%kernel.project_dir%/src/EntityObserver"
+            namespace: App\EntityObserver
+
+    # Unique id generator configuration
+    unique_id_generator:
+        # This table is part of the bundle and is created automatically.
+        table_name: wb_doctrine_ext_unique_id

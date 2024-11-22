@@ -1,0 +1,3 @@
+controllers:
+    resource: "../../vendor/webeak/file-bundle/src/Controller/"
+    type: attribute

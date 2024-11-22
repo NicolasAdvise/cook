@@ -1,0 +1,120 @@
+@import 'colors.css';
+@import 'font.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --bt-font-size-2xs: 0.45rem;
+    --bt-font-size-xs: 0.675rem;
+    --bt-font-size-sm: 0.7875rem;
+    --bt-font-size-base: 0.9rem;
+    --bt-font-size-lg: 1.0125rem;
+    --bt-font-size-xl: 1.6875rem;
+    --bt-font-size-2xl: 2.025rem;
+    --bt-font-size-3xl: 2.7rem;
+}
+
+html,body {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    scroll-behavior: smooth;
+}
+*,
+:after,
+:before {
+    box-sizing: inherit;
+}
+h2,
+h4 {
+    margin: 0;
+}
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+code {
+    @apply font-mono;
+}
+img,
+svg {
+    display: block;
+    vertical-align: middle;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.fill-current {
+    fill: currentColor;
+}
+
+.tracking-wider {
+    letter-spacing: 0.1em;
+}
+.tracking-widest {
+    letter-spacing: 0.2em;
+}
+
+.router-link-active {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    font-weight: bold;
+    border-left-width: 3px;
+}
+
+.router-link-active.primary {
+    @apply text-primary-100;
+    @apply border-primary-100;
+    @apply bg-primary-600;
+}
+
+.router-link-active.ireseau {
+    @apply text-ireseau-100;
+    @apply border-ireseau-100;
+    @apply bg-ireseau-600;
+}
+
+.router-link-active.portal {
+    @apply text-portal-100;
+    @apply border-portal-100;
+    @apply bg-portal-600;
+}
+
+.router-link-active.sso {
+    @apply text-sso-100;
+    @apply border-sso-100;
+    @apply bg-sso-600;
+}
+
+a.link {
+    @apply font-bold;
+    @apply hover:underline;
+    @apply transition-colors;
+}
+
+.theme-admin a.link {
+    @apply text-primary-500;
+    @apply hover:text-primary-600;
+}
+
+.theme-ireseau a.link {
+    @apply text-ireseau-500;
+    @apply hover:text-ireseau-600;
+}
+
+.theme-portal a.link {
+    @apply text-portal-500;
+    @apply hover:text-portal-600;
+}
+
+.theme-sso a.link {
+    @apply text-sso-500;
+    @apply hover:text-sso-600;
+}

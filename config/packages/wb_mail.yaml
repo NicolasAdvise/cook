@@ -1,0 +1,29 @@
+wb_mail:
+    #
+    # Spooler configuration
+    #
+    spooler:
+        # Maximum number of messages sent in a row.
+        nb_message_per_batch: 5
+
+        # Time between each message (in ms).
+        send_delay_per_message: 100
+
+        # Time to wait between batches (in ms).
+        send_delay_per_batch: 1000
+
+        # Maximum execution time of the flush() operation (in ms).
+        # The spooler will stop itself when the limit is reached.
+        max_execution_time: 50000
+
+        # Maximum number of time to try to send a mail before considering it as failed.
+        max_retry_count: 2
+
+#        # Root directory where the spooler should write its files.
+#        save_path: '%kernel.project_dir%/var/storage/wb-mail/spooler'
+#
+#        # Root directory where the web versions of sent emails are kept.
+#        webviews_save_path: '%kernel.project_dir%/var/storage/wb-mail/webviews'
+
+        # Level of priority the spooler can understand.
+        priorities: ['high', 'normal', 'low']

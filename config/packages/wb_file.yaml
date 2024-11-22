@@ -1,0 +1,68 @@
+wb_file:
+    # Lifespan of temp files. They will be cleaned up by the command "wb:file:clear".
+    temp_files_lifetime: 7200 # 2H
+
+    # Path to the image to show when a non-existing image is requested. If null the default internal image will be used.
+    not_found_image_path: ~
+
+    # Path to the image to show when the user try to access an image he doesn't have access to. If null the default internal image will be used.
+    access_denied_image_path: ~
+
+    # Default filesystem to use in case no specific filesystem is defined for a file or preset.
+    default_filesystem: local_private
+
+    # Type of storage to use to store files' metadata.
+    default_storage: doctrine_local
+
+    #
+    # Available storages.
+    # A storage is responsible for storing files' metadata.
+    #
+    storages:
+        # Storage dedicated to files uploaded on the portal.
+        doctrine_portal:
+            type: doctrine
+            entity_manager: default
+            entity_class: Webeak\Bundle\FileBundle\Bridge\Doctrine\Orm\Entity\File
+
+        # Storage dedicated to files uploaded on I-Réseau.
+        #        doctrine_ireseau:
+        #            type: doctrine
+        #            entity_manager: ireseau
+        #            entity_class: App\Entity\IReseau\WbFile
+
+        # Storage dedicated to files uploaded on the SSO.
+        #        doctrine_sso:
+        #            type: doctrine
+        #            entity_manager: sso
+        #            entity_class: App\Entity\Sso\WbFile
+
+        # Storage dedicated to files uploaded on local app (admin)
+        doctrine_local:
+            type: doctrine
+            entity_manager: default
+
+    #
+    # All available filesystems.
+    # The filesystem is responsible for storing the actual files' content.
+    #
+    # Available types:
+    # - local: Store files on the local filesystem.
+    # - aws_s3: Store files on an AWS S3 bucket.
+    # - proxy: Store files via a remote FileBundle (through http requests).
+    # - ftp: Store files on a remote FTP server.
+    #
+    filesystems:
+        # Filesystems to store files on the local machine.
+        local_private:
+            type: local
+            save_path: '%kernel.project_dir%/var/storage/wb-files/files'
+
+        local_public:
+            type: local
+            save_path: '%kernel.project_dir%/public/storage'
+
+    #
+    # Presets
+    #
+    configuration_presets: ~

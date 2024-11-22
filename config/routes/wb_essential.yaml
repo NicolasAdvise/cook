@@ -1,0 +1,5 @@
+controllers:
+    # Special path only applicable to the dev project.
+    # The bundle version of this file points to the vendor/ dir.
+    resource: "../../vendor/webeak/essential-bundle/src/Controller/"
+    type: attribute

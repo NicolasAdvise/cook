@@ -1,0 +1,91 @@
+wb_api:
+    # Fallback locale to use when a translation is not found for the current locale.
+    default_locale: fr
+
+    # Default action path resolver to use for generating resources actions path.
+    default_action_path_resolver: Webeak\Bundle\ApiBundle\Metadata\PathResolver\UnderscoreActionPathResolver
+
+    # Max number of relations an action can follow. More will result in an exception.
+    relations_max_depth: 30
+
+    #
+    # Defines parameters concerning collection actions.
+    #
+    collection:
+        filtering:
+            # To enable or disable filtering for all actions by default.
+            enabled: false
+
+            # Name to use as wrapper for filtering parameters. Null means no wrapper so the name of the filter will be the name of the query parameter.
+            wrapper_parameter_name: ~
+
+        ordering:
+            # The default order of results.
+            direction: ~
+
+            # The name of the query parameter to order results.
+            parameter_name: order
+
+        pagination:
+            # To enable or disable pagination for all resource collections by default.
+            enabled: true
+
+            # To allow the client to enable or disable the pagination.
+            client_enabled: false
+
+            # To allow the client to set the number of items per page.
+            client_items_per_page: true
+
+            # The default pagination strategy to use.
+            # Can be "offset" or "id".
+            #
+            # "id" is far more efficient but you loose the ability to "jump" to a specific page.
+            strategy: offset
+
+            # The default direction to use when ordering by id.
+            # Only used if strategy is "id".
+            strategy_id_direction: asc
+
+            # The default number of items per page.
+            items_per_page: 30
+
+            # The maximum number of items per page.
+            maximum_items_per_page: 100
+
+            # The default name of the parameter handling the page number.
+            page_parameter_name: page
+
+            # The name of the query parameter to enable or disable pagination.
+            enabled_parameter_name: pagination
+
+            # The name of the query parameter to set the number of items per page.
+            items_per_page_parameter_name: itemsPerPage
+
+        limit:
+            # The name of the query parameter to limit results.
+            parameter_name: limit
+
+        group_by:
+            # The name of the query parameter to set a group by.
+            parameter_name: groupby
+
+    #
+    # Define custom mapping parameters to for bundles.
+    # Each key must be a bundle name.
+    #
+    mappings:
+        WebeakEssentialsBundle:
+            directory: Bridge/Doctrine/Orm/Entity
+            namespace: Webeak\Bundle\EssentialsBundle\Bridge\Doctrine\Orm\Entity
+
+    metadata:
+        # Type of loader to use to load metadata. You can create your own by creating a service tagged with "wb_api.metadata.loader".
+        loader_type: editor
+
+    # Define parameters related to the api editor.
+    editor:
+        # Array of ips allowed to access the editor.
+        allowed_ips: ['172.168.10.1', '127.0.0.1', 'fe80::1', '::1']
+
+        # Directory where the editor configuration files should be written.
+        save_path: "%kernel.project_dir%/var/storage/wb-api"

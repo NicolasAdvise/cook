@@ -1,0 +1,7 @@
+api:
+    resource: '.'
+    type:     'wb_api'
+
+controllers:
+    resource: "../../vendor/webeak/api-bundle/src/Controller/"
+    type: attribute

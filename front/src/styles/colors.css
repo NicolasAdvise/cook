@@ -1,0 +1,193 @@
+/**
+ * Color vars.
+ */
+:root {
+    --bt-form-base-input-background-disabled-color: #ececec;
+
+    --bt-color-primary-rgb: 0,163,135;
+    --bt-color-secondary-rgb: 34,133,218;
+
+    /** Banquette */
+    --bt-color-primary : rgb(theme('colors.detailed.primary.500'));
+    --bt-color-primary-50 : rgb(theme('colors.detailed.primary.50'));
+    --bt-color-primary-100: rgb(theme('colors.detailed.primary.100'));
+    --bt-color-primary-150: rgb(theme('colors.detailed.primary.150'));
+    --bt-color-primary-200: rgb(theme('colors.detailed.primary.200'));
+    --bt-color-primary-250: rgb(theme('colors.detailed.primary.250'));
+    --bt-color-primary-300: rgb(theme('colors.detailed.primary.300'));
+    --bt-color-primary-350: rgb(theme('colors.detailed.primary.350'));
+    --bt-color-primary-400: rgb(theme('colors.detailed.primary.400'));
+    --bt-color-primary-450: rgb(theme('colors.detailed.primary.450'));
+    --bt-color-primary-500: rgb(theme('colors.detailed.primary.500'));
+    --bt-color-primary-550: rgb(theme('colors.detailed.primary.550'));
+    --bt-color-primary-600: rgb(theme('colors.detailed.primary.600'));
+    --bt-color-primary-650: rgb(theme('colors.detailed.primary.650'));
+    --bt-color-primary-700: rgb(theme('colors.detailed.primary.700'));
+    --bt-color-primary-750: rgb(theme('colors.detailed.primary.750'));
+    --bt-color-primary-800: rgb(theme('colors.detailed.primary.800'));
+    --bt-color-primary-850: rgb(theme('colors.detailed.primary.850'));
+    --bt-color-primary-900: rgb(theme('colors.detailed.primary.900'));
+    --bt-color-primary-950: rgb(theme('colors.detailed.primary.950'));
+    --bt-color-primary-contrast: rgb(theme('colors.detailed.primary.contrast'));
+
+    --bt-color-warning : rgb(theme('colors.detailed.yellow.500'));
+    --bt-color-warning-50 : rgb(theme('colors.detailed.yellow.50'));
+    --bt-color-warning-100: rgb(theme('colors.detailed.yellow.100'));
+    --bt-color-warning-150: rgb(theme('colors.detailed.yellow.150'));
+    --bt-color-warning-200: rgb(theme('colors.detailed.yellow.200'));
+    --bt-color-warning-250: rgb(theme('colors.detailed.yellow.250'));
+    --bt-color-warning-300: rgb(theme('colors.detailed.yellow.300'));
+    --bt-color-warning-350: rgb(theme('colors.detailed.yellow.350'));
+    --bt-color-warning-400: rgb(theme('colors.detailed.yellow.400'));
+    --bt-color-warning-450: rgb(theme('colors.detailed.yellow.450'));
+    --bt-color-warning-500: rgb(theme('colors.detailed.yellow.500'));
+    --bt-color-warning-550: rgb(theme('colors.detailed.yellow.550'));
+    --bt-color-warning-600: rgb(theme('colors.detailed.yellow.600'));
+    --bt-color-warning-650: rgb(theme('colors.detailed.yellow.650'));
+    --bt-color-warning-700: rgb(theme('colors.detailed.yellow.700'));
+    --bt-color-warning-750: rgb(theme('colors.detailed.yellow.750'));
+    --bt-color-warning-800: rgb(theme('colors.detailed.yellow.800'));
+    --bt-color-warning-850: rgb(theme('colors.detailed.yellow.850'));
+    --bt-color-warning-900: rgb(theme('colors.detailed.yellow.900'));
+    --bt-color-warning-950: rgb(theme('colors.detailed.yellow.950'));
+    --bt-color-warning-contrast: rgb(theme('colors.detailed.yellow.contrast'));
+
+    --bt-color-danger : rgb(theme('colors.detailed.red.500'));
+    --bt-color-danger-50 : rgb(theme('colors.detailed.red.50'));
+    --bt-color-danger-100: rgb(theme('colors.detailed.red.100'));
+    --bt-color-danger-150: rgb(theme('colors.detailed.red.150'));
+    --bt-color-danger-200: rgb(theme('colors.detailed.red.200'));
+    --bt-color-danger-250: rgb(theme('colors.detailed.red.250'));
+    --bt-color-danger-300: rgb(theme('colors.detailed.red.300'));
+    --bt-color-danger-350: rgb(theme('colors.detailed.red.350'));
+    --bt-color-danger-400: rgb(theme('colors.detailed.red.400'));
+    --bt-color-danger-450: rgb(theme('colors.detailed.red.450'));
+    --bt-color-danger-500: rgb(theme('colors.detailed.red.500'));
+    --bt-color-danger-550: rgb(theme('colors.detailed.red.550'));
+    --bt-color-danger-600: rgb(theme('colors.detailed.red.600'));
+    --bt-color-danger-650: rgb(theme('colors.detailed.red.650'));
+    --bt-color-danger-700: rgb(theme('colors.detailed.red.700'));
+    --bt-color-danger-750: rgb(theme('colors.detailed.red.750'));
+    --bt-color-danger-800: rgb(theme('colors.detailed.red.800'));
+    --bt-color-danger-850: rgb(theme('colors.detailed.red.850'));
+    --bt-color-danger-900: rgb(theme('colors.detailed.red.900'));
+    --bt-color-danger-950: rgb(theme('colors.detailed.red.950'));
+    --bt-color-danger-contrast: rgb(theme('colors.detailed.red.contrast'));
+
+    --bt-color-success : rgb(theme('colors.detailed.green.500'));
+    --bt-color-success-50 : rgb(theme('colors.detailed.green.50'));
+    --bt-color-success-100: rgb(theme('colors.detailed.green.100'));
+    --bt-color-success-150: rgb(theme('colors.detailed.green.150'));
+    --bt-color-success-200: rgb(theme('colors.detailed.green.200'));
+    --bt-color-success-250: rgb(theme('colors.detailed.green.250'));
+    --bt-color-success-300: rgb(theme('colors.detailed.green.300'));
+    --bt-color-success-350: rgb(theme('colors.detailed.green.350'));
+    --bt-color-success-400: rgb(theme('colors.detailed.green.400'));
+    --bt-color-success-450: rgb(theme('colors.detailed.green.450'));
+    --bt-color-success-500: rgb(theme('colors.detailed.green.500'));
+    --bt-color-success-550: rgb(theme('colors.detailed.green.550'));
+    --bt-color-success-600: rgb(theme('colors.detailed.green.600'));
+    --bt-color-success-650: rgb(theme('colors.detailed.green.650'));
+    --bt-color-success-700: rgb(theme('colors.detailed.green.700'));
+    --bt-color-success-750: rgb(theme('colors.detailed.green.750'));
+    --bt-color-success-800: rgb(theme('colors.detailed.green.800'));
+    --bt-color-success-850: rgb(theme('colors.detailed.green.850'));
+    --bt-color-success-900: rgb(theme('colors.detailed.green.900'));
+    --bt-color-success-950: rgb(theme('colors.detailed.green.950'));
+    --bt-color-success-contrast: rgb(theme('colors.detailed.green.contrast'));
+
+    --bt-color-valid: rgb(theme('colors.detailed.green.500'));
+    --bt-color-valid-contrast: rgb(theme('colors.detailed.green.contrast'));
+
+    --bt-color-error: rgb(theme('colors.detailed.red.500'));
+    --bt-color-error-contrast: rgb(theme('colors.detailed.red.contrast'));
+
+
+    --color-admin : rgb(theme('colors.detailed.primary.500'));
+    --color-admin-50 : rgb(theme('colors.detailed.primary.50'));
+    --color-admin-100: rgb(theme('colors.detailed.primary.100'));
+    --color-admin-150: rgb(theme('colors.detailed.primary.150'));
+    --color-admin-200: rgb(theme('colors.detailed.primary.200'));
+    --color-admin-250: rgb(theme('colors.detailed.primary.250'));
+    --color-admin-300: rgb(theme('colors.detailed.primary.300'));
+    --color-admin-350: rgb(theme('colors.detailed.primary.350'));
+    --color-admin-400: rgb(theme('colors.detailed.primary.400'));
+    --color-admin-450: rgb(theme('colors.detailed.primary.450'));
+    --color-admin-500: rgb(theme('colors.detailed.primary.500'));
+    --color-admin-550: rgb(theme('colors.detailed.primary.550'));
+    --color-admin-600: rgb(theme('colors.detailed.primary.600'));
+    --color-admin-650: rgb(theme('colors.detailed.primary.650'));
+    --color-admin-700: rgb(theme('colors.detailed.primary.700'));
+    --color-admin-750: rgb(theme('colors.detailed.primary.750'));
+    --color-admin-800: rgb(theme('colors.detailed.primary.800'));
+    --color-admin-850: rgb(theme('colors.detailed.primary.850'));
+    --color-admin-900: rgb(theme('colors.detailed.primary.900'));
+    --color-admin-950: rgb(theme('colors.detailed.primary.950'));
+    --color-admin-contrast: rgb(theme('colors.detailed.primary.contrast'));
+
+    --color-ireseau : rgb(theme('colors.detailed.ireseau.500'));
+    --color-ireseau-50 : rgb(theme('colors.detailed.ireseau.50'));
+    --color-ireseau-100: rgb(theme('colors.detailed.ireseau.100'));
+    --color-ireseau-150: rgb(theme('colors.detailed.ireseau.150'));
+    --color-ireseau-200: rgb(theme('colors.detailed.ireseau.200'));
+    --color-ireseau-250: rgb(theme('colors.detailed.ireseau.250'));
+    --color-ireseau-300: rgb(theme('colors.detailed.ireseau.300'));
+    --color-ireseau-350: rgb(theme('colors.detailed.ireseau.350'));
+    --color-ireseau-400: rgb(theme('colors.detailed.ireseau.400'));
+    --color-ireseau-450: rgb(theme('colors.detailed.ireseau.450'));
+    --color-ireseau-500: rgb(theme('colors.detailed.ireseau.500'));
+    --color-ireseau-550: rgb(theme('colors.detailed.ireseau.550'));
+    --color-ireseau-600: rgb(theme('colors.detailed.ireseau.600'));
+    --color-ireseau-650: rgb(theme('colors.detailed.ireseau.650'));
+    --color-ireseau-700: rgb(theme('colors.detailed.ireseau.700'));
+    --color-ireseau-750: rgb(theme('colors.detailed.ireseau.750'));
+    --color-ireseau-800: rgb(theme('colors.detailed.ireseau.800'));
+    --color-ireseau-850: rgb(theme('colors.detailed.ireseau.850'));
+    --color-ireseau-900: rgb(theme('colors.detailed.ireseau.900'));
+    --color-ireseau-950: rgb(theme('colors.detailed.ireseau.950'));
+    --color-ireseau-contrast: rgb(theme('colors.detailed.ireseau.contrast'));
+
+    --color-portal : rgb(theme('colors.detailed.portal.500'));
+    --color-portal-50 : rgb(theme('colors.detailed.portal.50'));
+    --color-portal-100: rgb(theme('colors.detailed.portal.100'));
+    --color-portal-150: rgb(theme('colors.detailed.portal.150'));
+    --color-portal-200: rgb(theme('colors.detailed.portal.200'));
+    --color-portal-250: rgb(theme('colors.detailed.portal.250'));
+    --color-portal-300: rgb(theme('colors.detailed.portal.300'));
+    --color-portal-350: rgb(theme('colors.detailed.portal.350'));
+    --color-portal-400: rgb(theme('colors.detailed.portal.400'));
+    --color-portal-450: rgb(theme('colors.detailed.portal.450'));
+    --color-portal-500: rgb(theme('colors.detailed.portal.500'));
+    --color-portal-550: rgb(theme('colors.detailed.portal.550'));
+    --color-portal-600: rgb(theme('colors.detailed.portal.600'));
+    --color-portal-650: rgb(theme('colors.detailed.portal.650'));
+    --color-portal-700: rgb(theme('colors.detailed.portal.700'));
+    --color-portal-750: rgb(theme('colors.detailed.portal.750'));
+    --color-portal-800: rgb(theme('colors.detailed.portal.800'));
+    --color-portal-850: rgb(theme('colors.detailed.portal.850'));
+    --color-portal-900: rgb(theme('colors.detailed.portal.900'));
+    --color-portal-950: rgb(theme('colors.detailed.portal.950'));
+    --color-portal-contrast: rgb(theme('colors.detailed.portal.contrast'));
+
+    --color-sso : rgb(theme('colors.detailed.sso.500'));
+    --color-sso-50 : rgb(theme('colors.detailed.sso.50'));
+    --color-sso-100: rgb(theme('colors.detailed.sso.100'));
+    --color-sso-150: rgb(theme('colors.detailed.sso.150'));
+    --color-sso-200: rgb(theme('colors.detailed.sso.200'));
+    --color-sso-250: rgb(theme('colors.detailed.sso.250'));
+    --color-sso-300: rgb(theme('colors.detailed.sso.300'));
+    --color-sso-350: rgb(theme('colors.detailed.sso.350'));
+    --color-sso-400: rgb(theme('colors.detailed.sso.400'));
+    --color-sso-450: rgb(theme('colors.detailed.sso.450'));
+    --color-sso-500: rgb(theme('colors.detailed.sso.500'));
+    --color-sso-550: rgb(theme('colors.detailed.sso.550'));
+    --color-sso-600: rgb(theme('colors.detailed.sso.600'));
+    --color-sso-650: rgb(theme('colors.detailed.sso.650'));
+    --color-sso-700: rgb(theme('colors.detailed.sso.700'));
+    --color-sso-750: rgb(theme('colors.detailed.sso.750'));
+    --color-sso-800: rgb(theme('colors.detailed.sso.800'));
+    --color-sso-850: rgb(theme('colors.detailed.sso.850'));
+    --color-sso-900: rgb(theme('colors.detailed.sso.900'));
+    --color-sso-950: rgb(theme('colors.detailed.sso.950'));
+    --color-sso-contrast: rgb(theme('colors.detailed.sso.contrast'));
+}

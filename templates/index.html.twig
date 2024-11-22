@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ vite_assets('styles') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ vite_assets('scripts') }}
+{% endblock %}
+
+{% block body %}
+    <div id="app"></div>
+{% endblock %}
