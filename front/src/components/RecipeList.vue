@@ -1,5 +1,7 @@
 <template>
     <div class="p-8 flex flex-col">
+        <button @click="getMeals">Menus dans la console</button>
+
         <ul>
             <li v-for="(meal, index) in meals.meal" :key="index" @click="triggerModal(meal)">{{meal.name}}</li>
         </ul>
@@ -10,11 +12,19 @@
 import { Vue } from "../vue-typescript";
 import {Component, Expose} from "@banquette/vue-typescript";
 import Modal from "../components/Modal.vue";
+import { Injector } from "@banquette/dependency-injection";
+import { HttpService, HttpResponse } from "@banquette/http";
+import {ApiService} from "@banquette/api";
+import {Recipe} from "../model/recipe.entity";
 
 @Component({
     name: 'recipe-list',
     components: {
-        Modal
+        Modal,
+        Injector,
+        HttpResponse,
+        HttpService,
+        ApiService
     }
 })
 export default class RecipeList extends Vue {
@@ -30,6 +40,30 @@ export default class RecipeList extends Vue {
             this.selectedMeal = meal
             console.log('selectedMeal ='+ this.selectedMeal)
             this.modalState = true
+        }
+    }
+
+    //@Expose() async getMeals() {
+    //    console.log('function getMeals')
+    //    try {
+    //        const http = Injector.Get(HttpService);
+    //        const response = http.get('/api/recipes')
+    //        await response.promise;
+    //        console.log(response.result)
+    //    } catch (error) {
+    //        console.log('erreur dans getMeals')
+    //    }
+    //}
+
+    @Expose() public async getMeals() {
+        console.log('function getMeals')
+        try {
+            const api = Injector.Get(ApiService);
+            const response = await api.get('get_recipes', Recipe).promise;
+            console.log(response)
+            console.log(response.result)
+        } catch (error) {
+            console.log('erreur dans getMeals :', error)
         }
     }
 

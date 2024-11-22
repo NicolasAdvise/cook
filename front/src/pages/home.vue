@@ -36,13 +36,13 @@ export default class HomePage {
 
     @Expose() async addRecipe(): Promise<Response> {
         const data = {
-            ref: 'aab',
-            title: 'Jambon purée',
+            ref: 'abb',
+            title: 'Jambon purée avec des brocolis',
             description: "c'est facile et les enfants aiment",
             preparationTime: 20,
-            ingredients: ['purée', 'jambon'],
+            ingredients: ['purée', 'jambon', 'brocolis'],
             steps: [
-                'dans une casserole mélanger les pommes de terre avec du lait',
+                'dans une casserole mélanger les pommes de terre avec du lait, rajouter les brocolis',
                 'bien mélanger',
                 'servir dans une assiette avec le jambon',
                 'bon appétit'
