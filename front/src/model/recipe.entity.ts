@@ -6,11 +6,19 @@ import { NotEmpty, And, Max } from '@banquette/validation'
 import {Pojo} from "@banquette/model";
 
 @Alias('Recipe')
-@Endpoint('get_recipes', '/api/recipes', 'GET')
+@Endpoint('get_all', '/api/recipes', 'GET')
+@Endpoint('get_recipe', '/api/recipe/{id}', 'GET')
+@Endpoint('delete_recipe', '/api/delete/{id}', 'DELETE')
 @Endpoint('post_recipes','/api/recipes', 'POST')
 export class Recipe {
     @Pojo()
+    @Api()
     public id: number;
+
+    @Pojo()
+    @Api()
+    @Form()
+    public ref: string;
 
     @Assert(And(NotEmpty(), Max(100)))
     @Form()
@@ -29,14 +37,15 @@ export class Recipe {
     @Pojo()
     public preparationTime: number;
 
-    @Form()
+    @Form(FormArray())
     @Api()
     @Pojo()
-    public ingredients: string[];
+    public ingredients: string[] = [];
 
-    @Form()
+    @Form(FormArray())
     @Api()
     @Pojo()
-    public steps: string[];
+    public steps: string[] = [];
 }
+
 

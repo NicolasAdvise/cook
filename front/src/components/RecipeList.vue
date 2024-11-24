@@ -1,21 +1,24 @@
 <template>
     <div class="p-8 flex flex-col">
-        <button @click="getMeals">Menus dans la console</button>
-
-        <ul>
-            <li v-for="(meal, index) in meals.meal" :key="index" @click="triggerModal(meal)">{{meal.name}}</li>
+        <h2>Liste des recettes :</h2>
+        <ul v-if="meals">
+            <li v-for="(meal, index) in meals" :key="index">
+                <span @click="triggerModal(meal)">{{meal.title}}</span> <bt-button @click.prevent="deleteRecipe(meal.id)">Supprimer</bt-button>
+            </li>
         </ul>
+        <p v-else-if="!meals">Pas de menus disponibles</p>
     </div>
     <modal v-if="modalState" @click="triggerModal" :meal="selectedMeal"/>
 </template>
 <script lang="ts">
 import { Vue } from "../vue-typescript";
-import {Component, Expose} from "@banquette/vue-typescript";
+import {Component, Expose, Lifecycle} from "@banquette/vue-typescript";
 import Modal from "../components/Modal.vue";
 import { Injector } from "@banquette/dependency-injection";
 import { HttpService, HttpResponse } from "@banquette/http";
 import {ApiService} from "@banquette/api";
 import {Recipe} from "../model/recipe.entity";
+import {reactive} from "vue";
 
 @Component({
     name: 'recipe-list',
@@ -24,10 +27,38 @@ import {Recipe} from "../model/recipe.entity";
         Injector,
         HttpResponse,
         HttpService,
-        ApiService
+        ApiService,
+        reactive
     }
 })
 export default class RecipeList extends Vue {
+
+    @Expose() public meals = reactive([]);
+
+    @Lifecycle('mounted')
+    public async getMeals() {
+        try {
+            const api = Injector.Get(ApiService);
+            const response = await api.get('get_all', Recipe).promise;
+            console.log(response.result)
+            this.meals = response.result;
+        } catch (error) {
+            console.log('erreur dans getMeals :', error)
+        }
+    }
+
+    @Expose() public async deleteRecipe(id: number) {
+        console.log('id = ', id)
+        try {
+            const api = Injector.Get(ApiService);
+            const response = await api.delete('delete_recipe', Recipe,{ id });
+            console.log(response);
+            console.log("Suppresion de la recette : ", id)
+            await this.getMeals()
+        } catch (error) {
+            console.log('erreur lors de la suppression : ', error)
+        }
+    }
 
     @Expose() public modalState: boolean = false;
 
@@ -43,50 +74,17 @@ export default class RecipeList extends Vue {
         }
     }
 
-    //@Expose() async getMeals() {
-    //    console.log('function getMeals')
-    //    try {
-    //        const http = Injector.Get(HttpService);
-    //        const response = http.get('/api/recipes')
-    //        await response.promise;
-    //        console.log(response.result)
-    //    } catch (error) {
-    //        console.log('erreur dans getMeals')
-    //    }
-    //}
-
-    @Expose() public async getMeals() {
+    // For Test purpose
+    @Expose() async getMealsRaw() {
         console.log('function getMeals')
         try {
-            const api = Injector.Get(ApiService);
-            const response = await api.get('get_recipes', Recipe).promise;
-            console.log(response)
+            const http = Injector.Get(HttpService);
+            const response = http.get('/api/recipes')
+            await response.promise;
             console.log(response.result)
         } catch (error) {
-            console.log('erreur dans getMeals :', error)
+            console.log('erreur dans getMeals')
         }
-    }
-
-
-    @Expose() public meals = {
-        meal: [
-            {
-                name: "Boeuf Bourguignon",
-                description: "Un ragoût de boeuf mijoté dans du vin rouge, souvent accompagné de légumes comme des carottes et des oignons.",
-            },
-            {
-                name: "Coq au Vin",
-                description: "Poulet mijoté dans du vin rouge, avec des champignons, des oignons et du lard.",
-            },
-            {
-                name: "Ratatouille",
-                description: "Un mélange de légumes méditerranéens (courgettes, aubergines, tomates, poivrons) mijotés dans de l'huile d'olive.",
-            },
-            {
-                name: "Quiche Lorraine",
-                description: "Une pâte brisée garnie d'un mélange d'œufs, de crème fraîche, de lardons et de fromage.",
-            }
-        ]
     }
 
 }

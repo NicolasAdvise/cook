@@ -1,41 +1,31 @@
 <template>
         <bt-form model="Recipe" persist-endpoint="post_recipes" v-slot="{v, model, submit}">
+            <bt-form-hidden control="ref" :value="generateRef()"></bt-form-hidden>
             <bt-form-text control="title">Titre</bt-form-text>
             <bt-form-text control="description">Description</bt-form-text>
             <bt-form-text control="preparationTime">Temps de préparation</bt-form-text>
-            <bt-form-text control="ingredients">Ingrédients</bt-form-text>
-            <bt-form-array control="steps">Etapes
-                <bt-form-text></bt-form-text>
-            </bt-form-array>
-
-            <!--<bt-form-text control="steps">Etapes</bt-form-text>
-
-
-            <div class="flex items-center justify-between pb-2">
-                <span class="font-bold">Ingrédients:</span>
-                <bt-button @click.prevent="addTag(model, 'ingredients')" variant="xs success"><i-material-add crop height=".8em"></i-material-add></bt-button>
+            <div>
+                <div>
+                    <span>Ingrédients</span>
+                    <bt-button @click.prevent="addIngredient(model)">+</bt-button>
+                </div>
             </div>
-            <hr class="mt-0"/>
-        <div v-for="(ingredient, index) in model.ingredients" class="flex gap-4 items-center" v-if="model.ingredients.length">
-            <bt-form-text :control="'ingredients/'+index+'/name'" :key="ingredient.id">Nom</bt-form-text>
-            <bt-button variant="link danger" @click.prevent="removeTag(model, index, 'ingredients')">
-                <i-material-delete crop></i-material-delete>
-            </bt-button>
-        </div>
-            <div v-else class="text-center italic">Pas d'ingrédients encore.</div>
-        <div class="flex items-center justify-between pb-2">
-            <span class="font-bold">Etapes:</span>
-            <bt-button @click.prevent="addTag(model, 'steps')" variant="xs success"><i-material-add crop height=".8em"></i-material-add></bt-button>
-        </div>
-        <hr class="mt-0"/>
-        <div v-for="(step, index) in model.steps" class="flex gap-4 items-center" v-if="model.steps.length">
-            <bt-form-text :control="'steps/'+index+'/description'" :key="step.id">Etape</bt-form-text>
-            <bt-button variant="link danger" @click.prevent="removeTag(model, index, 'steps')">
-                <i-material-delete crop></i-material-delete>
-            </bt-button>
-        </div>
-        <div v-else class="text-center italic">Pas d'étapes encore.</div>
-            <bt-form-text control="steps">Etapes</bt-form-text>-->
+            <div v-for="(ingredient, index) in model.ingredients" :key="index" v-if="model.ingredients">
+                <bt-form-text :control="'ingredients/'+index">Ingrédient</bt-form-text>
+                <bt-button @click.prevent="removeIngredient(model, index)">Supprimer</bt-button>
+            </div>
+            <div v-else>Pas encore d'ingrédients</div>
+            <div>
+                <div>
+                    <span> Etapes</span>
+                    <bt-button @click.prevent="addStep(model)">+</bt-button>
+                </div>
+            </div>
+            <div v-for="(step, index) in model.steps" :key="index" v-if="model.steps">
+                <bt-form-text :control="'steps/'+index">Etape</bt-form-text>
+                <bt-button @click.prevent="removeStep(model, index)">Supprimer</bt-button>
+            </div>
+            <div v-else>Pas encore d'étapes</div>
             <bt-button @click="submit()">Sauvegarder</bt-button>
         </bt-form>
 </template>
@@ -45,10 +35,6 @@ import {Component, Expose} from "@banquette/vue-typescript";
 import {FormControl, FormObject} from "@banquette/model-form";
 import {BtFormText} from "@banquette/vue-ui";
 import {Recipe} from "../model/recipe.entity";
-import { ApiEndpointStorageService, ApiEndpoint } from "@banquette/api";
-import { Injector } from "@banquette/dependency-injection";
-import { HttpMethod } from "@banquette/http";
-import { ApiService, ApiRequest } from "@banquette/api";
 
 
 @Component({
@@ -61,14 +47,41 @@ export default class RecipeForm extends Vue{
 
     @Expose() public result!: Recipe;
 
-    @Expose() public addTag(model: Recipe, element: string): void {
-        model.element.push(new Tag());
+    //Fonction add et remove à dynamiser pour les rendre unvierselles
+    @Expose() public addStep(model: Recipe): void {
+        if (!model.steps){
+            model.steps = []
+        }
+        model.steps.push('');
     }
 
-    @Expose() public removeTag(model: Recipe, index: number, element:string): void {
-        if (model.element.length > index) {
-            model.element.splice(index, 1);
+    @Expose() public removeStep(model: Recipe, index: number): void {
+        if (model.steps.length > index) {
+            model.steps.splice(index, 1);
         }
+    }
+
+    @Expose() public addIngredient(model: Recipe): void {
+        if (!model.ingredients){
+            model.ingredients = []
+        }
+        model.ingredients.push('');
+    }
+
+    @Expose() public removeIngredient(model: Recipe, index: number): void {
+        if (model.ingredients.length > index) {
+            model.ingredients.splice(index, 1);
+        }
+    }
+
+    @Expose() public generateRef(): string {
+        const char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let result = '';
+        for (let i = 0; i < 6; i++ ){
+            result+= char.charAt(Math.floor(Math.random() * char.length));
+        }
+        console.log(result)
+        return result
     }
 }
 </script>
