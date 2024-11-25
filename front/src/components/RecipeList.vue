@@ -2,13 +2,16 @@
     <div class="p-8 flex flex-col">
         <h2>Liste des recettes :</h2>
         <ul v-if="meals">
-            <li v-for="(meal, index) in meals" :key="index">
-                <span @click="triggerModal(meal)">{{meal.title}}</span> <bt-button @click.prevent="deleteRecipe(meal.id)">Supprimer</bt-button>
+            <li v-for="(meal, index) in meals" :key="index" class="flex flex-row justify-between">
+                <span @click="triggerModal(meal)">{{meal.title}}</span>
+                <bt-button @click.prevent="triggerModal(meal, false)">Détails</bt-button>
+                <bt-button @click.prevent="triggerModal(meal, true)">Modifier</bt-button>
+                <bt-button @click.prevent="deleteRecipe(meal.id)">Supprimer</bt-button>
             </li>
         </ul>
         <p v-else-if="!meals">Pas de menus disponibles</p>
     </div>
-    <modal v-if="modalState" @click="triggerModal" :meal="selectedMeal"/>
+    <modal v-if="modalState" @click="triggerModal" :meal="selectedMeal" :is-form="form"/>
 </template>
 <script lang="ts">
 import { Vue } from "../vue-typescript";
@@ -34,6 +37,8 @@ import {reactive} from "vue";
 export default class RecipeList extends Vue {
 
     @Expose() public meals = reactive([]);
+
+    @Expose() public form: boolean = false;
 
     @Lifecycle('mounted')
     public async getMeals() {
@@ -63,13 +68,14 @@ export default class RecipeList extends Vue {
     @Expose() public modalState: boolean = false;
 
     @Expose() public selectedMeal
-    @Expose() public triggerModal(meal) {
+    @Expose() public triggerModal(meal, form?: boolean = false) {
         if (this.modalState) {
             this.modalState = false
         } else {
-            console.log('meal = '+meal)
             this.selectedMeal = meal
-            console.log('selectedMeal ='+ this.selectedMeal)
+            if (form){
+                this.form = true
+            }
             this.modalState = true
         }
     }

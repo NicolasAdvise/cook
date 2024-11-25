@@ -10,6 +10,7 @@ import {Pojo} from "@banquette/model";
 @Endpoint('get_recipe', '/api/recipe/{id}', 'GET')
 @Endpoint('delete_recipe', '/api/delete/{id}', 'DELETE')
 @Endpoint('post_recipes','/api/recipes', 'POST')
+@Endpoint('put_recipe','/api/recipe/{id}', 'PUT')
 export class Recipe {
     @Pojo()
     @Api()

@@ -1,5 +1,8 @@
 <template>
-        <bt-form model="Recipe" persist-endpoint="post_recipes" v-slot="{v, model, submit}">
+    <div class="w-2/3 mx-auto flex flex-col ">
+        <h3 v-if="edit">Modifier une recette</h3>
+        <h3 v-else>Ajouter une recette</h3>
+        <bt-form model="Recipe" :persist-endpoint="persistEndpoint()" v-slot="{v, model, submit}">
             <bt-form-hidden control="ref" :value="generateRef()"></bt-form-hidden>
             <bt-form-text control="title">Titre</bt-form-text>
             <bt-form-text control="description">Description</bt-form-text>
@@ -10,28 +13,29 @@
                     <bt-button @click.prevent="addIngredient(model)">+</bt-button>
                 </div>
             </div>
-            <div v-for="(ingredient, index) in model.ingredients" :key="index" v-if="model.ingredients">
+            <div v-for="(ingredient, index) in model.ingredients" :key="index" v-if="model.ingredients" class="flex flex-row">
                 <bt-form-text :control="'ingredients/'+index">Ingrédient</bt-form-text>
                 <bt-button @click.prevent="removeIngredient(model, index)">Supprimer</bt-button>
             </div>
             <div v-else>Pas encore d'ingrédients</div>
             <div>
                 <div>
-                    <span> Etapes</span>
+                    <span>Etapes</span>
                     <bt-button @click.prevent="addStep(model)">+</bt-button>
                 </div>
             </div>
-            <div v-for="(step, index) in model.steps" :key="index" v-if="model.steps">
+            <div v-for="(step, index) in model.steps" :key="index" v-if="model.steps"  class="flex flex-row">
                 <bt-form-text :control="'steps/'+index">Etape</bt-form-text>
                 <bt-button @click.prevent="removeStep(model, index)">Supprimer</bt-button>
             </div>
             <div v-else>Pas encore d'étapes</div>
             <bt-button @click="submit()">Sauvegarder</bt-button>
         </bt-form>
+    </div>
 </template>
 <script lang="ts">
 import {Vue} from "../vue-typescript";
-import {Component, Expose} from "@banquette/vue-typescript";
+import {Component, Expose, Lifecycle, Prop} from "@banquette/vue-typescript";
 import {FormControl, FormObject} from "@banquette/model-form";
 import {BtFormText} from "@banquette/vue-ui";
 import {Recipe} from "../model/recipe.entity";
@@ -46,6 +50,25 @@ import {Recipe} from "../model/recipe.entity";
 export default class RecipeForm extends Vue{
 
     @Expose() public result!: Recipe;
+
+    @Prop({default: false}) public edit!: boolean;
+
+    @Prop({default:null}) public meal!: Recipe | null;
+
+    @Lifecycle('mounted')
+    public initializeForm() {
+        console.log(this.persistEndpoint())
+        if (this.meal){
+            ///... Peupler le formulaire ici
+        }
+    }
+
+    @Expose() public persistEndpoint(): string {
+        if(this.edit){
+            return 'put_recipe'
+        }
+        return 'post_recipe'
+    }
 
     //Fonction add et remove à dynamiser pour les rendre unvierselles
     @Expose() public addStep(model: Recipe): void {
@@ -80,7 +103,6 @@ export default class RecipeForm extends Vue{
         for (let i = 0; i < 6; i++ ){
             result+= char.charAt(Math.floor(Math.random() * char.length));
         }
-        console.log(result)
         return result
     }
 }
