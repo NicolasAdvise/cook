@@ -47,6 +47,16 @@ export class Recipe {
     @Api()
     @Pojo()
     public steps: string[] = [];
+
+    constructor(id: number, ref: string, title: string, description: string, preparationTime: number, ingredients: string[], steps: string[]) {
+        this.id = id;
+        this.ref = ref;
+        this.title = title;
+        this.description = description;
+        this.preparationTime = preparationTime;
+        this.ingredients = ingredients;
+        this.steps = steps;
+    }
 }
 
 

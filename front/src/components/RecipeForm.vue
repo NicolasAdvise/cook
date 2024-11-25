@@ -2,30 +2,30 @@
     <div class="w-2/3 mx-auto flex flex-col ">
         <h3 v-if="edit">Modifier une recette</h3>
         <h3 v-else>Ajouter une recette</h3>
-        <bt-form model="Recipe" :persist-endpoint="persistEndpoint()" v-slot="{v, model, submit}">
+        <bt-form model="Recipe" :persist-method="edit ? 'PUT' : 'POST'" :persist-endpoint="persistEndpoint()" v-model="currentMeal" v-slot="{v, model, submit}">
             <bt-form-hidden control="ref" :value="generateRef()"></bt-form-hidden>
             <bt-form-text control="title">Titre</bt-form-text>
             <bt-form-text control="description">Description</bt-form-text>
             <bt-form-text control="preparationTime">Temps de préparation</bt-form-text>
             <div>
-                <div>
+                <div class="flex flex-row gap-4 items-center justify-center">
                     <span>Ingrédients</span>
                     <bt-button @click.prevent="addIngredient(model)">+</bt-button>
                 </div>
             </div>
             <div v-for="(ingredient, index) in model.ingredients" :key="index" v-if="model.ingredients" class="flex flex-row">
-                <bt-form-text :control="'ingredients/'+index">Ingrédient</bt-form-text>
+                <bt-form-text :control="'ingredients/'+index"></bt-form-text>
                 <bt-button @click.prevent="removeIngredient(model, index)">Supprimer</bt-button>
             </div>
             <div v-else>Pas encore d'ingrédients</div>
             <div>
-                <div>
+                <div class="flex flex-row gap-4 items-center justify-center">
                     <span>Etapes</span>
                     <bt-button @click.prevent="addStep(model)">+</bt-button>
                 </div>
             </div>
             <div v-for="(step, index) in model.steps" :key="index" v-if="model.steps"  class="flex flex-row">
-                <bt-form-text :control="'steps/'+index">Etape</bt-form-text>
+                <bt-form-text :control="'steps/'+index"></bt-form-text>
                 <bt-button @click.prevent="removeStep(model, index)">Supprimer</bt-button>
             </div>
             <div v-else>Pas encore d'étapes</div>
@@ -38,7 +38,8 @@ import {Vue} from "../vue-typescript";
 import {Component, Expose, Lifecycle, Prop} from "@banquette/vue-typescript";
 import {FormControl, FormObject} from "@banquette/model-form";
 import {BtFormText} from "@banquette/vue-ui";
-import {Recipe} from "../model/recipe.entity";
+import {Recipe} from "../entity/recipe.entity";
+import {toRaw} from "vue";
 
 
 @Component({
@@ -53,21 +54,24 @@ export default class RecipeForm extends Vue{
 
     @Prop({default: false}) public edit!: boolean;
 
-    @Prop({default:null}) public meal!: Recipe | null;
+    @Prop({type: Recipe, default:null}) public meal!: Recipe;
 
-    @Lifecycle('mounted')
-    public initializeForm() {
-        console.log(this.persistEndpoint())
+    @Expose() public currentMeal!:Recipe;
+
+    @Expose
+    public created() {
+        console.log('prop meal :', this.meal)
         if (this.meal){
-            ///... Peupler le formulaire ici
+            this.currentMeal = Object.assign(new Recipe(),this.meal)
+            console.log('currentMeal : ', this.currentMeal)
         }
     }
 
     @Expose() public persistEndpoint(): string {
         if(this.edit){
-            return 'put_recipe'
+            return 'put_recipe';
         }
-        return 'post_recipe'
+        return 'post_recipes'
     }
 
     //Fonction add et remove à dynamiser pour les rendre unvierselles

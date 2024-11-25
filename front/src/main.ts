@@ -8,7 +8,7 @@ import './themes';
 import './entity';
 import './styles/main.css';
 import './hooks/before-request.http-hook';
-import './model/recipe.entity'
+import './entity/recipe.entity'
 
 const router = createRouter({
     history: createWebHashHistory(),

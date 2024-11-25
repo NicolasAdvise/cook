@@ -1,17 +1,6 @@
 <template>
-    Home
-
-    Count : {{ counter }}<br />
-
-
-    <button @click="addRecipe">ajouter recette</button>
-
-
-    <button @click="increment">Increment</button>
-    <button @click="triggerModal">Modal</button>
-    <recipe-form />
     <recipe-list />
-
+    <recipe-form />
 </template>
 
 
@@ -24,12 +13,6 @@ import RecipeForm from "../components/RecipeForm.vue";
     components: {RecipeList, RecipeForm}
 })
 export default class HomePage {
-    @Expose() public counter: number = 0;
-
-    @Expose() public increment(): void {
-        ++this.counter;
-    }
-
     @Expose() public initializeSearchBar() {
 
     }
@@ -72,8 +55,6 @@ export default class HomePage {
             throw error;
         }
     }
-
-
 }
 </script>
 
