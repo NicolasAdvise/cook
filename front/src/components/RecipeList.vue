@@ -25,7 +25,7 @@
         </div>
     </bt-dialog>
 
-    <modal v-if="modalState" @close="closeModal()" :meal="selectedMeal" :is-form="form"/>
+    <modal v-if="modalState" @close="closeModal()" @reload="getMeals()" :meal="selectedMeal" :is-form="form"/>
 
 </template>
 <script lang="ts">
@@ -71,7 +71,11 @@ export default class RecipeList extends Vue {
     @Expose() public selectedMeal
 
     @Lifecycle('mounted')
-    public async getMeals() {
+    public async initializeMeals() {
+        await this.getMeals();
+    }
+
+    @Expose() public async getMeals() {
         try {
             const api = Injector.Get(ApiService);
             const response = await api.get('get_all', Recipe).promise;
@@ -142,6 +146,5 @@ export default class RecipeList extends Vue {
         }
         return `${hours}h ${minutes} min.`;
     }
-
 }
 </script>

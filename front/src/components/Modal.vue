@@ -2,7 +2,7 @@
     <div class="bg-black bg-opacity-30 w-full h-full inset-0 fixed flex justify-center items-center">
         <div  class="relative bg-admin-150 w-2/3 h-2/3 mx-auto flex flex-col items-center justify-center rounded p-10">
             <button class="btn-primary mt-5 text-bold absolute top-[3%] right-[3%]" @click="close()">X</button>
-            <recipe-form v-if="isForm" :edit="true" :meal="meal"></recipe-form>
+            <recipe-form v-if="isForm" :edit="true" :meal="meal" @close="close()" @reload="reload()"></recipe-form>
             <div v-else>
                 <h2 class="text-bold text-xl mb-5">{{ meal.title }}</h2>
                 <p class="mb-5">{{ meal.description }}</p>
@@ -39,6 +39,11 @@ export default class Modal extends Vue {
     @Expose()
     public close() {
         this.$emit('close');
+    }
+
+    @Expose()
+    public reload() {
+        this.$emit('reload');
     }
 }
 </script>

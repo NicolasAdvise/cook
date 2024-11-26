@@ -21,8 +21,9 @@ export default class HomePage {
     }
 
     @Expose() public async triggerGetMeals() {
-        //const child = this.$refs.list;
-        //await child.getMeals();
+        const child = this.$refs.list as RecipeList;
+        console.log(child);
+        await child.getMeals();
     }
 }
 </script>

@@ -72,6 +72,9 @@ export default class RecipeForm extends Vue{
             const ref = this.generateRef();
             Object.assign(this.currentMeal, new Recipe(), {ref: ref});
             console.log('Formulaire réinitialisé');
+        } else {
+            this.$emit('close');
+            this.$emit('reload');
         }
         this.$emit('reload-recipe')
     }
