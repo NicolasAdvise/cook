@@ -2,7 +2,7 @@
     <div class="w-2/3 mx-auto flex flex-col ">
         <h3 v-if="edit">Modifier une recette</h3>
         <h3 v-else>Ajouter une recette</h3>
-        <bt-form model="Recipe" :persist-method="edit ? 'PUT' : 'POST'" :persist-endpoint="persistEndpoint()" v-model="currentMeal" v-slot="{v, model, submit}">
+        <bt-form model="Recipe" :persist-method="edit ? 'PUT' : 'POST'" :persist-endpoint="persistEndpoint()" v-model="currentMeal" v-slot="{v, model, submit}" @persist-success="handleSave()">
             <bt-form-hidden control="ref" :value="generateRef()"></bt-form-hidden>
             <bt-form-text control="title">Titre</bt-form-text>
             <bt-form-text control="description">Description</bt-form-text>
@@ -29,7 +29,7 @@
                 <bt-button @click.prevent="removeStep(model, index)">Supprimer</bt-button>
             </div>
             <div v-else>Pas encore d'étapes</div>
-            <bt-button @click="submit()">Sauvegarder</bt-button>
+            <bt-button @click="submit();">Sauvegarder</bt-button>
         </bt-form>
     </div>
 </template>
@@ -39,7 +39,7 @@ import {Component, Expose, Lifecycle, Prop} from "@banquette/vue-typescript";
 import {FormControl, FormObject} from "@banquette/model-form";
 import {BtFormText} from "@banquette/vue-ui";
 import {Recipe} from "../entity/recipe.entity";
-import {toRaw} from "vue";
+import {ref, toRaw} from "vue";
 
 
 @Component({
@@ -56,15 +56,24 @@ export default class RecipeForm extends Vue{
 
     @Prop({type: Recipe, default:null}) public meal!: Recipe;
 
-    @Expose() public currentMeal!:Recipe;
+    @Expose() public currentMeal!:Recipe = ref();
 
-    @Expose
+    @Expose()
     public created() {
         console.log('prop meal :', this.meal)
         if (this.meal){
             this.currentMeal = Object.assign(new Recipe(),this.meal)
             console.log('currentMeal : ', this.currentMeal)
         }
+    }
+
+    @Expose() public handleSave(){
+        if (!this.edit){
+            const ref = this.generateRef();
+            Object.assign(this.currentMeal, new Recipe(), {ref: ref});
+            console.log('Formulaire réinitialisé');
+        }
+        this.$emit('reload-recipe')
     }
 
     @Expose() public persistEndpoint(): string {
@@ -74,7 +83,7 @@ export default class RecipeForm extends Vue{
         return 'post_recipes'
     }
 
-    //Fonction add et remove à dynamiser pour les rendre unvierselles
+    //Fonction add et remove à dynamiser pour les rendre universelles
     @Expose() public addStep(model: Recipe): void {
         if (!model.steps){
             model.steps = []

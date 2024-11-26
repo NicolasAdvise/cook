@@ -2,6 +2,7 @@
 import {Component} from "@banquette/vue-typescript";
 import Layout from "./layout/layout.vue";
 
+
 @Component({
     name: 'app',
     components: [Layout]

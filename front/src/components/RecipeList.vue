@@ -11,13 +11,22 @@
                     <span>{{ getDuration(meal.preparationTime)}}</span>
                     <bt-button @click.prevent="triggerModal(meal, false)">Détails</bt-button>
                     <bt-button @click.prevent="triggerModal(meal, true)">Modifier</bt-button>
-                    <bt-button @click.prevent="deleteRecipe(meal.id)">Supprimer</bt-button>
+                    <bt-button @click="dialog.show('agreement',{id: meal.id})">Supprimer</bt-button>
                 </div>
             </li>
         </ul>
         <p v-else-if="!meals">Pas de menus disponibles</p>
     </div>
+    <bt-dialog id="agreement" :close-by-mask="false" :close-on-escape="false" :show-close="false" v-slot="{bag}">
+        <p>Confirmer la suppression</p>
+        <div class="flex flex-row gap-2 items-center">
+            <bt-button variant="light link" @click="deleteRecipe(bag.id)">Oui</bt-button>
+            <bt-button @click="dialog.hide('agreement')">Non</bt-button>
+        </div>
+    </bt-dialog>
+
     <modal v-if="modalState" @close="closeModal()" :meal="selectedMeal" :is-form="form"/>
+
 </template>
 <script lang="ts">
 import { Vue } from "../vue-typescript";
@@ -28,6 +37,10 @@ import { HttpService, HttpResponse } from "@banquette/http";
 import {ApiService} from "@banquette/api";
 import {Recipe} from "../entity/recipe.entity";
 import {reactive} from "vue";
+import {BtDialog, useAlertGlobals} from "@banquette/vue-ui";
+import {useDialog} from "@banquette/vue-ui";
+import {BtAlert} from "@banquette/vue-ui";
+import {AlertService} from "@banquette/vue-ui";
 
 @Component({
     name: 'recipe-list',
@@ -37,14 +50,25 @@ import {reactive} from "vue";
         HttpResponse,
         HttpService,
         ApiService,
-        reactive
+        reactive,
+        BtDialog,
+        BtAlert,
+        AlertService
     }
 })
 export default class RecipeList extends Vue {
 
     @Expose() public meals = reactive([]);
 
+    @Expose() public alert = Injector.Get(AlertService)
+
+    @Expose() public dialog = useDialog();
+
     @Expose() public form: boolean = false;
+
+    @Expose() public modalState: boolean = false;
+
+    @Expose() public selectedMeal
 
     @Lifecycle('mounted')
     public async getMeals() {
@@ -58,6 +82,10 @@ export default class RecipeList extends Vue {
         }
     }
 
+    @Expose public created(){
+        this.alert.hideAll();
+    }
+
     @Expose() public async deleteRecipe(id: number) {
         console.log('id = ', id)
         try {
@@ -66,14 +94,14 @@ export default class RecipeList extends Vue {
             console.log(response);
             console.log("Suppresion de la recette : ", id)
             await this.getMeals()
+            this.dialog.hide('agreement')
+            this.alert.show('La recette a bien été suprimée', 'success', 3000);
+            await this.getMeals()
         } catch (error) {
             console.log('erreur lors de la suppression : ', error)
         }
     }
 
-    @Expose() public modalState: boolean = false;
-
-    @Expose() public selectedMeal
     @Expose() public triggerModal(meal, form?: boolean = false) {
         if (!this.modalState) {
             this.selectedMeal = meal
@@ -86,7 +114,9 @@ export default class RecipeList extends Vue {
 
     @Expose() public closeModal() {
         this.modalState = false;
+        this.form = false;
     }
+
 
     // For Test purpose
     @Expose() async getMealsRaw() {
@@ -110,7 +140,6 @@ export default class RecipeList extends Vue {
         if (minutes === 0) {
             return `${hours}h`;
         }
-
         return `${hours}h ${minutes} min.`;
     }
 

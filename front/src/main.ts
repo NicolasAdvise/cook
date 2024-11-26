@@ -9,6 +9,11 @@ import './entity';
 import './styles/main.css';
 import './hooks/before-request.http-hook';
 import './entity/recipe.entity'
+import {useDialogGlobals} from "@banquette/vue-ui";
+import {useAlertGlobals} from "@banquette/vue-ui";
+
+useDialogGlobals();
+useAlertGlobals();
 
 const router = createRouter({
     history: createWebHashHistory(),
