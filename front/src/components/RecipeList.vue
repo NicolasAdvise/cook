@@ -15,7 +15,8 @@
                 </div>
             </li>
         </ul>
-        <p v-else-if="!meals">Pas de menus disponibles</p>
+        <p v-else-if="!meals">Pas de recettes disponibles</p>
+        <p v-if="!nothingFound">Pas de recettes trouvées</p>
     </div>
     <bt-dialog id="agreement" :close-by-mask="false" :close-on-escape="false" :show-close="false" v-slot="{bag}">
         <p>Confirmer la suppression</p>
@@ -36,11 +37,12 @@ import { Injector } from "@banquette/dependency-injection";
 import { HttpService, HttpResponse } from "@banquette/http";
 import {ApiService} from "@banquette/api";
 import {Recipe} from "../entity/recipe.entity";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import {BtDialog, useAlertGlobals} from "@banquette/vue-ui";
 import {useDialog} from "@banquette/vue-ui";
 import {BtAlert} from "@banquette/vue-ui";
 import {AlertService} from "@banquette/vue-ui";
+
 
 @Component({
     name: 'recipe-list',
@@ -60,6 +62,10 @@ export default class RecipeList extends Vue {
 
     @Expose() public meals = reactive([]);
 
+    @Expose() public allMeals;
+
+    @Expose() public nothingFound = ref(false);
+
     @Expose() public alert = Injector.Get(AlertService)
 
     @Expose() public dialog = useDialog();
@@ -69,6 +75,8 @@ export default class RecipeList extends Vue {
     @Expose() public modalState: boolean = false;
 
     @Expose() public selectedMeal
+
+    @Expose() public filterText: string;
 
     @Lifecycle('mounted')
     public async initializeMeals() {
@@ -81,6 +89,7 @@ export default class RecipeList extends Vue {
             const response = await api.get('get_all', Recipe).promise;
             console.log(response.result)
             this.meals = response.result;
+            this.allMeals = response.result
         } catch (error) {
             console.log('erreur dans getMeals :', error)
         }
@@ -121,20 +130,6 @@ export default class RecipeList extends Vue {
         this.form = false;
     }
 
-
-    // For Test purpose
-    @Expose() async getMealsRaw() {
-        console.log('function getMeals')
-        try {
-            const http = Injector.Get(HttpService);
-            const response = http.get('/api/recipes')
-            await response.promise;
-            console.log(response.result)
-        } catch (error) {
-            console.log('erreur dans getMeals')
-        }
-    }
-
     @Expose() getDuration(time: number): string {
         const hours = Math.floor(time / 60);
         const minutes = time % 60;
@@ -145,6 +140,18 @@ export default class RecipeList extends Vue {
             return `${hours}h`;
         }
         return `${hours}h ${minutes} min.`;
+    }
+
+    @Expose() filterMeal(filter: string){
+        this.nothingFound = true;
+        console.log('fonction filterMeal')
+        this.filterText = filter.toLowerCase();
+        this.meals = this.allMeals.filter(meal => meal.title.toLowerCase().includes(this.filterText))
+        console.log(this.meals)
+        if (this.meals.length === 0){
+            this.nothingFound = false;
+            console.log('rien trouvé', this.nothingFound)
+        }
     }
 }
 </script>

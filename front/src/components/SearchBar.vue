@@ -1,25 +1,32 @@
 <template>
-<div>
-    <bt-form-text v-model="result" @input="filterRecipies"></bt-form-text>
+<div class="my-2">
+    <bt-form-text :control="controlBar" clearable @input="emitFilter" @keyup.delete="updateFilter">Rechercher</bt-form-text>
+
 </div>
 </template>
 <script lang="ts">
-import {Vue} from "../vue-typescript";
-import {Expose, Component, Prop} from "@banquette/vue-typescript";
+import { Vue } from "../vue-typescript";
+import {Component, Expose, Prop} from "@banquette/vue-typescript";
+import {FormControl} from "@banquette/form";
 
 @Component({
-    name: "search-bar"
+    name: "search-bar",
+    components: {FormControl}
 })
-export public class SearchBar extends Vue{
-    @Prop() meals;
+export default class SearchBar extends Vue {
 
-    @Expose() public result
-    @Expose() filterRecipies(event: Event) {
-        const target = event.target as HTMLInputElement;
-        const value = target.value;
-        if (value > 3) {
-
+    @Expose() public controlBar = new FormControl()
+    @Expose() emitFilter() {
+        console.log('fonction emitFilter')
+        if (this.controlBar.value.length > 3) {
+            console.log('+3')
+            this.$emit('filter', this.controlBar.value);
         }
+    }
+
+    @Expose() updateFilter() {
+        console.log('fonction updateFilter')
+        this.$emit('filter', this.controlBar.value);
     }
 }
 </script>
