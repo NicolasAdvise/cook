@@ -64,7 +64,7 @@ export default class RecipeList extends Vue {
 
     @Expose() public allMeals;
 
-    @Expose() public nothingFound = ref(false);
+    @Expose() public nothingFound = ref(true);
 
     @Expose() public alert = Injector.Get(AlertService)
 
@@ -87,7 +87,6 @@ export default class RecipeList extends Vue {
         try {
             const api = Injector.Get(ApiService);
             const response = await api.get('get_all', Recipe).promise;
-            console.log(response.result)
             this.meals = response.result;
             this.allMeals = response.result
         } catch (error) {
@@ -100,18 +99,17 @@ export default class RecipeList extends Vue {
     }
 
     @Expose() public async deleteRecipe(id: number) {
-        console.log('id = ', id)
         try {
             const api = Injector.Get(ApiService);
             const response = await api.delete('delete_recipe', Recipe,{ id });
-            console.log(response);
-            console.log("Suppresion de la recette : ", id)
             await this.getMeals()
             this.dialog.hide('agreement')
             this.alert.show('La recette a bien été suprimée', 'success', 3000);
             await this.getMeals()
         } catch (error) {
-            console.log('erreur lors de la suppression : ', error)
+            console.log('erreur lors de la suppression : ', error);
+            this.alert.show('Un problème est survenu', 'danger', 3000);
+
         }
     }
 
@@ -144,13 +142,10 @@ export default class RecipeList extends Vue {
 
     @Expose() filterMeal(filter: string){
         this.nothingFound = true;
-        console.log('fonction filterMeal')
         this.filterText = filter.toLowerCase();
         this.meals = this.allMeals.filter(meal => meal.title.toLowerCase().includes(this.filterText))
-        console.log(this.meals)
         if (this.meals.length === 0){
             this.nothingFound = false;
-            console.log('rien trouvé', this.nothingFound)
         }
     }
 }

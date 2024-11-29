@@ -3,6 +3,7 @@
         <div  class="relative bg-admin-150 w-2/3 h-2/3 mx-auto flex flex-col items-center justify-center rounded p-10">
             <button class="btn-primary mt-5 text-bold absolute top-[3%] right-[3%]" @click="close()">X</button>
             <recipe-form v-if="isForm" :edit="true" :meal="meal" @close="close()" @reload="reload()"></recipe-form>
+            <!-- On pourrait envisager de faire un composant pour ce bloc -->
             <div v-else>
                 <h2 class="text-bold text-xl mb-5">{{ meal.title }}</h2>
                 <p class="mb-5">{{ meal.description }}</p>

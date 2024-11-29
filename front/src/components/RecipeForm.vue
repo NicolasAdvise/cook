@@ -40,12 +40,15 @@ import {FormControl, FormObject} from "@banquette/model-form";
 import {BtFormText} from "@banquette/vue-ui";
 import {Recipe} from "../entity/recipe.entity";
 import {ref, toRaw} from "vue";
+import {BtAlert} from "@banquette/vue-ui";
+import {AlertService} from "@banquette/vue-ui";
+import {Injector} from "@banquette/dependency-injection";
 
 
 @Component({
     name: 'recipe-form',
     components: [
-        FormObject, FormControl, BtFormText
+        FormObject, FormControl, BtFormText, BtAlert, AlertService
     ]
 })
 export default class RecipeForm extends Vue{
@@ -58,12 +61,12 @@ export default class RecipeForm extends Vue{
 
     @Expose() public currentMeal!:Recipe = ref();
 
+    @Expose() public alert = Injector.Get(AlertService)
+
     @Expose()
     public created() {
-        console.log('prop meal :', this.meal)
         if (this.meal){
             this.currentMeal = Object.assign(new Recipe(),this.meal)
-            console.log('currentMeal : ', this.currentMeal)
         }
     }
 
@@ -71,7 +74,7 @@ export default class RecipeForm extends Vue{
         if (!this.edit){
             const ref = this.generateRef();
             Object.assign(this.currentMeal, new Recipe(), {ref: ref});
-            console.log('Formulaire réinitialisé');
+            this.alert.show('La recette a bien été créée', 'success', 3000);
         } else {
             this.$emit('close');
             this.$emit('reload');

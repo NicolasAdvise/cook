@@ -19,13 +19,11 @@ export default class SearchBar extends Vue {
     @Expose() emitFilter() {
         console.log('fonction emitFilter')
         if (this.controlBar.value.length > 3) {
-            console.log('+3')
             this.$emit('filter', this.controlBar.value);
         }
     }
 
     @Expose() updateFilter() {
-        console.log('fonction updateFilter')
         this.$emit('filter', this.controlBar.value);
     }
 }
