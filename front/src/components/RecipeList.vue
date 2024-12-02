@@ -1,23 +1,25 @@
 <template>
-    <div class="p-8 flex flex-col">
-        <h2 class="text-xl text-bold text-center mb-3">Liste des recettes</h2>
-        <ul v-if="meals">
-            <li v-for="(meal, index) in meals" :key="index" class="flex flex-row justify-between my-2 p-3 border-2 border-solid rounded-md border-primary-500">
-                <div class="flex flex-col">
-                    <span class="text-bold text-lg">{{meal.title}}</span>
-                    <span>{{ meal.description }}</span>
-                </div>
-                <div class="flex flex-row gap-2 items-center">
-                    <span>{{ getDuration(meal.preparationTime)}}</span>
-                    <bt-button @click.prevent="triggerModal(meal, false)">Détails</bt-button>
-                    <bt-button @click.prevent="triggerModal(meal, true)">Modifier</bt-button>
-                    <bt-button @click="dialog.show('agreement',{id: meal.id})">Supprimer</bt-button>
-                </div>
-            </li>
-        </ul>
-        <p v-else-if="!meals">Pas de recettes disponibles</p>
-        <p v-if="!nothingFound">Pas de recettes trouvées</p>
-    </div>
+    <bt-table :items="meals" pagination-position="bottom">
+        <template v-slot="{item}">
+            <bt-table-column title="Nom">
+                <span class="text-bold text-lg">{{ item.title }}</span><br>
+                <span>{{ item.description }}</span>
+            </bt-table-column>
+            <bt-table-column title="Durée">
+                {{ getDuration(item.preparationTime)}}
+            </bt-table-column>
+            <bt-table-column width="150px" title="actions">
+            <span class="flex items-center justify-end gap-1 -mr-1">
+                <bt-button variant="sm link" @click="edit(item)">
+                    <bt-button @click="btShowDialog('recipe-details', {meal: item})">Détails</bt-button>
+                    <bt-button @click="btShowDialog('recipe-edit',{meal: item})"> Modifier</bt-button>
+                    <bt-button @click="dialog.show('agreement',{id: item.id})">Supprimer</bt-button>
+                </bt-button>
+            </span>
+            </bt-table-column>
+        </template>
+    </bt-table>
+
     <bt-dialog id="agreement" :close-by-mask="false" :close-on-escape="false" :show-close="false" v-slot="{bag}">
         <p>Confirmer la suppression</p>
         <div class="flex flex-row gap-2 items-center">
@@ -26,28 +28,36 @@
         </div>
     </bt-dialog>
 
-    <modal v-if="modalState" @close="closeModal()" @reload="getMeals()" :meal="selectedMeal" :is-form="form"/>
+    <bt-dialog id="recipe-edit" v-slot="{bag}">
+        <!-- Just for work -->
+        <recipe-form :edit="true" :meal="bag.meal" @close="dialog.hide('recipe-edit')" @reload="getMeals()"></recipe-form>
+    </bt-dialog>
+
+    <bt-dialog id="recipe-details" v-slot="{bag}">
+        <recipe-details :meal="bag.meal" ></recipe-details>
+    </bt-dialog>
 
 </template>
 <script lang="ts">
 import { Vue } from "../vue-typescript";
 import {Component, Expose, Lifecycle} from "@banquette/vue-typescript";
-import Modal from "../components/Modal.vue";
 import { Injector } from "@banquette/dependency-injection";
 import { HttpService, HttpResponse } from "@banquette/http";
 import {ApiService} from "@banquette/api";
 import {Recipe} from "../entity/recipe.entity";
 import {reactive, ref} from "vue";
-import {BtDialog, useAlertGlobals} from "@banquette/vue-ui";
+import {BtDialog, useAlertGlobals, BtTable} from "@banquette/vue-ui";
 import {useDialog} from "@banquette/vue-ui";
 import {BtAlert} from "@banquette/vue-ui";
 import {AlertService} from "@banquette/vue-ui";
+import RecipeForm from "./RecipeForm.vue";
+import RecipeDetails from "./RecipeDetails.vue";
 
 
 @Component({
     name: 'recipe-list',
     components: {
-        Modal,
+        RecipeForm,
         Injector,
         HttpResponse,
         HttpService,
@@ -55,7 +65,9 @@ import {AlertService} from "@banquette/vue-ui";
         reactive,
         BtDialog,
         BtAlert,
-        AlertService
+        AlertService,
+        RecipeDetails,
+        BtTable
     }
 })
 export default class RecipeList extends Vue {
@@ -105,27 +117,10 @@ export default class RecipeList extends Vue {
             await this.getMeals()
             this.dialog.hide('agreement')
             this.alert.show('La recette a bien été suprimée', 'success', 3000);
-            await this.getMeals()
         } catch (error) {
             console.log('erreur lors de la suppression : ', error);
             this.alert.show('Un problème est survenu', 'danger', 3000);
-
         }
-    }
-
-    @Expose() public triggerModal(meal, form?: boolean = false) {
-        if (!this.modalState) {
-            this.selectedMeal = meal
-            if (form){
-                this.form = true
-            }
-            this.modalState = true
-        }
-    }
-
-    @Expose() public closeModal() {
-        this.modalState = false;
-        this.form = false;
     }
 
     @Expose() getDuration(time: number): string {

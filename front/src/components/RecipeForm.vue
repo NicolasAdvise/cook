@@ -35,11 +35,11 @@
 </template>
 <script lang="ts">
 import {Vue} from "../vue-typescript";
-import {Component, Expose, Lifecycle, Prop} from "@banquette/vue-typescript";
+import {Component, Expose, Prop} from "@banquette/vue-typescript";
 import {FormControl, FormObject} from "@banquette/model-form";
 import {BtFormText} from "@banquette/vue-ui";
 import {Recipe} from "../entity/recipe.entity";
-import {ref, toRaw} from "vue";
+import {ref} from "vue";
 import {BtAlert} from "@banquette/vue-ui";
 import {AlertService} from "@banquette/vue-ui";
 import {Injector} from "@banquette/dependency-injection";
@@ -79,7 +79,6 @@ export default class RecipeForm extends Vue{
             this.$emit('close');
             this.$emit('reload');
         }
-        this.$emit('reload-recipe')
     }
 
     @Expose() public persistEndpoint(): string {

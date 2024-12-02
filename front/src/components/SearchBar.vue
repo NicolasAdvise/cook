@@ -17,7 +17,6 @@ export default class SearchBar extends Vue {
 
     @Expose() public controlBar = new FormControl()
     @Expose() emitFilter() {
-        console.log('fonction emitFilter')
         if (this.controlBar.value.length > 3) {
             this.$emit('filter', this.controlBar.value);
         }
